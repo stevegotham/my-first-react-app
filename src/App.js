@@ -7,42 +7,42 @@ class App extends Component {
   
   state = {
     persons: [
-      { name: 'Killroy', age: 23 },
-      { name: 'Betty', age: 48 },
-      { name: 'Al', age: 22 }
+      { id: 'numeroUno', name: 'Killroy', age: 23 },
+      { id: 'numeroDos', name: 'Betty', age: 48 },
+      { id: 'numeroTres', name: 'Al', age: 22 }
     ],
     showPersons: true
   }
   
-  switchNameHandler = (newName) => {
-    // DON'T DO THIS: ---------> this.state.persons[0].name = newName;  ---> use this.setState() instead
+  nameChangeHandler = (event, id) => {
+    const persons = [...this.state.persons];
+    const personIndex = persons.findIndex(p => p.id === id);
+    const person = {...persons[personIndex]}; // spread operator is used to create a copy of the object
+    person.name = event.target.value;
+    persons[personIndex] = person;
     this.setState({
-      persons: [
-        { name: newName, age: 28 },
-        { name: 'Veronica', age: 48 },
-        { name: 'Al', age: 123 }
-      ]
-    })
-  }
-  
-  nameChangeHandler = (event) => {
-    this.setState({
-      persons: [
-        { name: 'Killroy', age: 28 },
-        { name: 'Betty', age: 48 },
-        { name: event.target.value, age: 123 }
-      ]      
-    })
+      persons: persons
+    });
   }
   
   togglePersonsHandler = () => {
     this.setState({
       showPersons: !this.state.showPersons
-    })
+    });
+  }
+  
+  deletePersonHandler = (i) => {
+    // CREATE A COPY OF STATE, UPDATE COPY, THEN SETSTATE()
+    // const persons = this.state.persons.slice(); // slice is used to create a copy of the array
+    const persons = [...this.state.persons]; // spread operator is used to create a copy of the array
+    persons.splice(i, 1);
+    this.setState({
+      persons: persons
+    });
   }
   
   render() {
-    
+    // method to use inline styling:
     const styling = {
       backgroundColor: 'lightgray',
       font: 'inherit',
@@ -51,29 +51,34 @@ class App extends Component {
       cursor: 'pointer'
     };
     
+    // method to conditionally render content to the DOM
+    let persons = null;
+    if (this.state.showPersons) {
+      persons = (
+        <div>
+        {
+          this.state.persons.map((person, i) => {
+            return (
+            <Person
+              key = {person.id}
+              click = {() => this.deletePersonHandler(i)}
+              name = {person.name}
+              age = {person.age}
+              changed = {(event) => this.nameChangeHandler(event, person.id)} />
+            )
+          })
+        }
+        </div>
+      );
+   }
+    
     return (
       <div className="App">
         <h1>This is my first React app</h1>
-        <p>This is really working!</p>
         <button
           style={styling}
           onClick={this.togglePersonsHandler}>Toggle Persons Display</button>
-        { this.state.showPersons === true ? 
-          <div>
-            <Person
-            name = {this.state.persons[0].name}
-            age = {this.state.persons[0].age} 
-            click = {this.switchNameHandler.bind(this, 'Mr Roboto')} />
-            <Person
-              name={this.state.persons[1].name}
-              age={this.state.persons[1].age}>I am a hottie!</Person>
-            <Person
-              name = {this.state.persons[2].name}
-              age = {this.state.persons[2].age} 
-              changed = {this.nameChangeHandler}/>
-          </div>
-          : null
-        }
+        {persons}
       </div>
     );
   }
