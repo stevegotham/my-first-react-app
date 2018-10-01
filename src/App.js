@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import Person from './Person/Person';
+import Radium from 'radium'; // package that enables the use of pseudo-selectors
 
 class App extends Component {
 
@@ -11,8 +12,10 @@ class App extends Component {
       { id: 'numeroDos', name: 'Betty', age: 48 },
       { id: 'numeroTres', name: 'Al', age: 22 }
     ],
-    showPersons: true
+    showPersons: false
   }
+  
+  statePersonsCopy = [...this.state.persons];
   
   nameChangeHandler = (event, id) => {
     const persons = [...this.state.persons];
@@ -21,8 +24,14 @@ class App extends Component {
     person.name = event.target.value;
     persons[personIndex] = person;
     this.setState({
-      persons: persons
+      persons: persons 
     });
+    // could simply declare persons - es6 allows for single declaration if key and value are same - eg: 
+    // this.setState({persons});
+    // ||
+    // this.setState({
+    //   persons
+    // });
   }
   
   togglePersonsHandler = () => {
@@ -36,24 +45,48 @@ class App extends Component {
     // const persons = this.state.persons.slice(); // slice is used to create a copy of the array
     const persons = [...this.state.persons]; // spread operator is used to create a copy of the array
     persons.splice(i, 1);
-    this.setState({
-      persons: persons
-    });
+    if (persons.length) {
+      this.setState({
+        persons: persons
+      });
+    } else {
+      this.setState({
+        persons: this.statePersonsCopy,
+        showPersons: false
+      })
+    }
   }
   
   render() {
     // method to use inline styling:
     const styling = {
-      backgroundColor: 'lightgray',
+      backgroundColor: 'green',
+      color: 'white',
       font: 'inherit',
       border: '1px solid blue',
+      outline: 'none',
       padding: '8px',
-      cursor: 'pointer'
+      cursor: 'pointer',
+      ':hover': { // must wrap in quotes as value beginning with a colon is not valid js
+        opacity: '0.6',
+        color: 'yellow' 
+      }
     };
+    
+    let buttonText = this.state.showPersons ? 'Hide' : 'Show';
+    
+    const classes = [];
+    if (this.state.persons.length < 3) classes.push('bold');
+    if (this.state.persons.length < 2) classes.push('red');
     
     // method to conditionally render content to the DOM
     let persons = null;
     if (this.state.showPersons) {
+      styling.backgroundColor = 'red';
+      styling[':hover'] = {
+        ...styling[':hover'],
+        color: 'blue'
+      }
       persons = (
         <div>
         {
@@ -64,7 +97,8 @@ class App extends Component {
               click = {() => this.deletePersonHandler(i)}
               name = {person.name}
               age = {person.age}
-              changed = {(event) => this.nameChangeHandler(event, person.id)} />
+              changed = {(event) => this.nameChangeHandler(event, person.id)}
+              style = {classes.join(' ')} />
             )
           })
         }
@@ -73,15 +107,15 @@ class App extends Component {
    }
     
     return (
-      <div className="App">
+      <div className='App'>
         <h1>This is my first React app</h1>
         <button
           style={styling}
-          onClick={this.togglePersonsHandler}>Toggle Persons Display</button>
+          onClick={this.togglePersonsHandler}>{buttonText} Persons Display</button>
         {persons}
       </div>
     );
   }
 }
 
-export default App;
+export default Radium(App);
