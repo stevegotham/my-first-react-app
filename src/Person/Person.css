@@ -5,3 +5,10 @@
   margin: 15px auto;
   padding: 15px;
 }
+
+@media (max-width: 600px) {
+  .Person {
+    width: 66%;
+    background: lightblue;
+  }
+}

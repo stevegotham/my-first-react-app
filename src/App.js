@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import './App.css';
+import classes from './App.css';
 import Person from './Person/Person';
-import Radium, { StyleRoot } from 'radium'; // package that enables the use of pseudo-selectors -- don't forget to export default Radium(appName) at end of file
 
 class App extends Component {
 
@@ -58,35 +57,17 @@ class App extends Component {
   }
   
   render() {
-    // method to use inline styling:
-    const styling = {
-      backgroundColor: 'green',
-      color: 'white',
-      font: 'inherit',
-      border: '1px solid blue',
-      outline: 'none',
-      padding: '8px',
-      cursor: 'pointer',
-      ':hover': { // must wrap in quotes as value beginning with a colon is not valid js
-        opacity: '0.6',
-        color: 'yellow' 
-      }
-    };
     
-    let buttonText = this.state.showPersons ? 'Hide' : 'Show';
+    let btnText = this.state.showPersons ? 'Hide' : 'Show';
+    let btnClass = '';
     
-    const classes = [];
-    if (this.state.persons.length < 3) classes.push('bold');
-    if (this.state.persons.length < 2) classes.push('red');
+    const classesCollection = [];
+    if (this.state.persons.length < 3) classesCollection.push(classes.bold);
+    if (this.state.persons.length < 2) classesCollection.push(classes.red);
     
     // method to conditionally render content to the DOM
     let persons = null;
     if (this.state.showPersons) {
-      styling.backgroundColor = 'red';
-      styling[':hover'] = {
-        ...styling[':hover'],
-        color: 'blue'
-      }
       persons = (
         <div>
         {
@@ -98,26 +79,25 @@ class App extends Component {
               name = {person.name}
               age = {person.age}
               changed = {(event) => this.nameChangeHandler(event, person.id)}
-              style = {classes.join(' ')} />
+              style = {classesCollection.join(' ')} />
             )
           })
         }
         </div>
       );
+      btnClass = classes.red;
    }
     
     return (
-      <StyleRoot>
-        <div className='App'>
+        <div className={classes.App}>
           <h1>This is my first React app</h1>
-          <button
-            style={styling}
-            onClick={this.togglePersonsHandler}>{buttonText} Persons Display</button>
+          <button 
+            className={btnClass}
+            onClick={this.togglePersonsHandler}>{btnText} Persons Display</button>
           {persons}
         </div>
-      </StyleRoot>
     );
   }
 }
 
-export default Radium(App);
+export default App;
