@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import Person from './Person/Person';
-import Radium from 'radium'; // package that enables the use of pseudo-selectors
+import Radium, { StyleRoot } from 'radium'; // package that enables the use of pseudo-selectors -- don't forget to export default Radium(appName) at end of file
 
 class App extends Component {
 
@@ -107,13 +107,15 @@ class App extends Component {
    }
     
     return (
-      <div className='App'>
-        <h1>This is my first React app</h1>
-        <button
-          style={styling}
-          onClick={this.togglePersonsHandler}>{buttonText} Persons Display</button>
-        {persons}
-      </div>
+      <StyleRoot>
+        <div className='App'>
+          <h1>This is my first React app</h1>
+          <button
+            style={styling}
+            onClick={this.togglePersonsHandler}>{buttonText} Persons Display</button>
+          {persons}
+        </div>
+      </StyleRoot>
     );
   }
 }
