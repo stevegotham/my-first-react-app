@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import classes from './App.css';
-import Person from './Person/Person';
-import ErrorBoundry from './ErrorBoundry/ErrorBoundry';
+import Person from '../components/Persons/Person/Person';
+import ErrorBoundry from '../components/ErrorBoundry/ErrorBoundry';
 
 class App extends Component {
 
@@ -15,10 +15,10 @@ class App extends Component {
     showPersons: false
   }
   
-  statePersonsCopy = [...this.state.persons];
+  statePersonsCopy = [...this.state.persons]; // used to revert to initial state if all persons are deleted
   
   nameChangeHandler = (event, id) => {
-    const persons = [...this.state.persons];
+    const persons = [...this.state.persons]; // spread operator is used to create a copy of the array
     const personIndex = persons.findIndex(p => p.id === id);
     const person = {...persons[personIndex]}; // spread operator is used to create a copy of the object
     person.name = event.target.value;
@@ -74,14 +74,13 @@ class App extends Component {
         {
           this.state.persons.map((person, i) => {
             return (
-            <ErrorBoundry key = {person.id}>
               <Person
-              click = {() => this.deletePersonHandler(i)}
-              name = {person.name}
-              age = {person.age}
-              changed = {(event) => this.nameChangeHandler(event, person.id)}
-              style = {classesCollection.join(' ')} />
-            </ErrorBoundry>
+                key = {person.id}
+                click = {() => this.deletePersonHandler(i)}
+                name = {person.name}
+                age = {person.age}
+                changed = {(event) => this.nameChangeHandler(event, person.id)}
+                style = {classesCollection.join(' ')} />
             )
           })
         }
