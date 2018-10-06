@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import classes from './App.css';
-import Person from '../components/Persons/Person/Person';
+import Persons from '../components/Persons/Persons';
 import ErrorBoundry from '../components/ErrorBoundry/ErrorBoundry';
+import Cockpit from '../components/Cockpit/Cockpit';
 
 class App extends Component {
 
@@ -59,42 +60,23 @@ class App extends Component {
   
   render() {
     
-    let btnText = this.state.showPersons ? 'Hide' : 'Show';
-    let btnClass = '';
-    
-    const classesCollection = [];
-    if (this.state.persons.length < 3) classesCollection.push(classes.bold);
-    if (this.state.persons.length < 2) classesCollection.push(classes.red);
-    
     // method to conditionally render content to the DOM
     let persons = null;
     if (this.state.showPersons) {
-      persons = (
-        <div>
-        {
-          this.state.persons.map((person, i) => {
-            return (
-              <Person
-                key = {person.id}
-                click = {() => this.deletePersonHandler(i)}
-                name = {person.name}
-                age = {person.age}
-                changed = {(event) => this.nameChangeHandler(event, person.id)}
-                style = {classesCollection.join(' ')} />
-            )
-          })
-        }
-        </div>
-      );
-      btnClass = classes.red;
-   }
+      persons = 
+          <Persons 
+            persons={this.state.persons}
+            clicked={this.deletePersonHandler}
+            changed={this.nameChangeHandler} />
+    }
     
     return (
         <div className={classes.App}>
-          <h1>This is my first React app</h1>
-          <button 
-            className={btnClass}
-            onClick={this.togglePersonsHandler}>{btnText} Persons Display</button>
+          <Cockpit
+            title={this.props.title}
+            showPersons={this.state.showPersons}
+            persons={this.state.persons}
+            clicked={this.togglePersonsHandler} />
           {persons}
         </div>
     );
