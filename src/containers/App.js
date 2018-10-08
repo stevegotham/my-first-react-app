@@ -1,11 +1,36 @@
 import React, { Component } from 'react';
 import classes from './App.css';
 import Persons from '../components/Persons/Persons';
-import ErrorBoundry from '../components/ErrorBoundry/ErrorBoundry';
+// import ErrorBoundry from '../components/ErrorBoundry/ErrorBoundry';
 import Cockpit from '../components/Cockpit/Cockpit';
 
 class App extends Component {
 
+  constructor(props) {
+    super(props);
+    console.log('[App.js] inside constructor()', props);
+  }
+  
+  componentWillMount() {
+    console.log('[App.js] inside componentWillMount()');
+  }
+  
+  componentDidlMount() {
+    console.log('[App.js] inside componentDidlMount()');
+  }
+  
+  shouldComponentUpdate(nextProps, nextState) {
+    console.log('[UPDATE App.js] inside shouldComponentUpdate()', nextProps, nextState);
+    return true;
+  }
+  
+  componentWillUpdate(nextProps, nextState) {
+    console.log('[UPDATE App.js] inside componentWillUpdate()', nextProps, nextState);
+  }
+  
+  componentDidUpdate() {
+    console.log('[UPDATE App.js] inside componentDidMount()');
+  }
   
   state = {
     persons: [
@@ -60,6 +85,7 @@ class App extends Component {
   
   render() {
     
+    console.log('[App.js] inside render()');
     // method to conditionally render content to the DOM
     let persons = null;
     if (this.state.showPersons) {
