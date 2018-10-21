@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import classes from './Cockpit.css';
-import Aux from '../../hoc/Aux';
+// can import Fragment from React in lieu of a higher order component such as Aux
+// import Aux from '../../hoc/Aux';
 
 const cockpit = (props) => {
 	
@@ -12,13 +13,13 @@ const cockpit = (props) => {
 	if (props.persons.length < 2) classesCollection.push(classes.red);
 	
 	return (
-		<Aux>
+		<Fragment>
 			<h1>{props.title}</h1>
 			<p className={classesCollection.join(' ')}>Look at us go!</p>
 			<button 
 				className={btnClass}
 				onClick={props.clicked}>{btnText} Persons Display</button>
-		</Aux>
+		</Fragment>
 	);
 }
 	

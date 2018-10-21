@@ -14,12 +14,10 @@ class ErrorBoundry extends Component {
 		});
 	}
 	
+	checkedComponent = this.state.errorMessage ? <h1>{this.state.errorMessage}</h1> : this.props.children;
+	
 	render() {
-		if (this.state.errorMessage) {
-			return <h1>{this.state.errorMessage}</h1>
-		} else {
-			return this.props.children;
-		}
+		return this.checkedComponent;
 	}
 }
 
