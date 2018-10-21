@@ -11,12 +11,12 @@ class App extends PureComponent {
     console.log('[App.js] inside constructor()', props);
   }
   
-  componentWillMount() {
-    console.log('[App.js] inside componentWillMount()');
-  }
+  // componentWillMount() {
+  //   console.log('[App.js] inside componentWillMount()');
+  // }
   
-  componentDidlMount() {
-    console.log('[App.js] inside componentDidlMount()');
+  componentDidMount() {
+    console.log('[App.js] inside componentDidMount()');
   }
   
   // comment out shouldComponentUpdate() when importing PureComponent from React
@@ -26,8 +26,18 @@ class App extends PureComponent {
   //          this.state.showPersons !== nextState.showPersons;
   // }
   
-  componentWillUpdate(nextProps, nextState) {
-    console.log('[UPDATE App.js] inside componentWillUpdate()', nextProps, nextState);
+  // componentWillUpdate(nextProps, nextState) {
+  //   console.log('[UPDATE App.js] inside componentWillUpdate()', nextProps, nextState);
+  // }
+  
+  static getDerivedStateFromProps(nextProps, prevState) {
+    console.log('[UPDATE Persons.js] inside getDerivedStateFromProps()', nextProps, prevState);
+    return prevState; // no update in this example
+  }
+  
+  getSnapshotBeforeUpdate() {
+    console.log('[UPDATE App.js] inside getSnapshotBeforeUpdate()');
+    return null;
   }
   
   componentDidUpdate() {
